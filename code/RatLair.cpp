@@ -6,9 +6,13 @@
 #include "Bullet.h"
 #include "Pickup.h"
 
+/*The Rat Catchers Revenge
+Student project created by Mark Tasaka base on John Horton’s 'Zombie Arena',
+from */
 
 using namespace sf;
 
+//Main: program entry
 int main()
 {
 	// Here is the instance of TextureHolder
@@ -55,7 +59,7 @@ int main()
 
 	// Prepare for a horde of rats
 	int numRats;
-	int numZombiesAlive;
+	int numRatsAlive;
 	Rat* rats = NULL;
 
 	// 100 bullets should do
@@ -159,8 +163,8 @@ int main()
 		// Handle controls while playing
 		if (state == State::PLAYING)
 		{
-			// Handle the pressing and releasing of the WASD keys
-			if (Keyboard::isKeyPressed(Keyboard::W))
+			/* Handle the pressing and releasing of the WASD keys of arrow keys*/
+			if (Keyboard::isKeyPressed(Keyboard::W) || Keyboard::isKeyPressed(Keyboard::Up))
 			{
 				player.moveUp();
 			}
@@ -169,7 +173,7 @@ int main()
 				player.stopUp();
 			}
 
-			if (Keyboard::isKeyPressed(Keyboard::S))
+			if (Keyboard::isKeyPressed(Keyboard::S) || Keyboard::isKeyPressed(Keyboard::Down))
 			{
 				player.moveDown();
 			}
@@ -178,7 +182,7 @@ int main()
 				player.stopDown();
 			}
 
-			if (Keyboard::isKeyPressed(Keyboard::A))
+			if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left) )
 			{
 				player.moveLeft();
 			}
@@ -187,7 +191,7 @@ int main()
 				player.stopLeft();
 			}
 
-			if (Keyboard::isKeyPressed(Keyboard::D))
+			if (Keyboard::isKeyPressed(Keyboard::D) || Keyboard::isKeyPressed(Keyboard::Down))
 			{
 				player.moveRight();
 			}
@@ -264,8 +268,8 @@ int main()
 			{
 				// Prepare thelevel
 				// We will modify the next two lines later
-				arena.width = 500;
-				arena.height = 500;
+				arena.width = 1000;
+				arena.height = 1000;
 				arena.left = 0;
 				arena.top = 0;
 
@@ -281,12 +285,12 @@ int main()
 				ammoPickup.setArena(arena);
 
 				// Create a horde of rats
-				numRats = 10;
+				numRats = 20;
 
 				// Delete the previously allocated memory (if it exists)
 				delete[] rats;
 				rats = createHorde(numRats, arena);
-				numZombiesAlive = numRats;
+				numRatsAlive = numRats;
 
 				// Reset the clock so there isn't a frame jump
 				clock.restart();
@@ -372,10 +376,10 @@ int main()
 									hiScore = score;
 								}
 
-								numZombiesAlive--;
+								numRatsAlive--;
 
 								// When all the rats are dead (again)
-								if (numZombiesAlive == 0) {
+								if (numRatsAlive == 0) {
 									state = State::LEVELING_UP;
 								}
 							}

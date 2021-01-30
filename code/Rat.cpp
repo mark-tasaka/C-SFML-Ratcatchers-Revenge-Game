@@ -12,31 +12,31 @@ void Rat::spawn(float startX, float startY, int type, int seed)
 	switch (type)
 	{
 	case 0:
-		//bloater
-		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/bloater.png"));
-		m_Speed = 40;
-		m_Health = 5;
+		//Abomination
+		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/abomination.png"));
+		m_Speed = ABOMINATION_SPEED;
+		m_Health = ABOMINATION_HEALTH;
 		break;
 
 	case 1:
-		//chaser
-		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/chaser.png"));
-		m_Speed = 70;
-		m_Health = 1;
+		//Runt
+		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/runt.png"));
+		m_Speed = RUNT_SPEED;
+		m_Health = RUNT_HEALTH;
 		break;
 
 	case 2:
-		//crawler
-		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/crawler.png"));
-		m_Speed = 20;
-		m_Health = 3;
+		//Squeeler
+		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/squeeler.png"));
+		m_Speed = SQUEELER_SPEED;
+		m_Health = SQUEELER_HEALTH;
 		break;
 
 	default:
 		//default, for future use 'error graphic'
-		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/crawler.png"));
-		m_Speed = 0;
-		m_Health = 0;
+		m_Sprite = Sprite(TextureHolder::GetTexture("graphics/runt.png"));
+		m_Speed = RUNT_SPEED;
+		m_Health = RUNT_HEALTH;
 		break;
 	}
 
@@ -69,9 +69,14 @@ bool Rat::hit()
 
 	if (m_Health < 0)
 	{
+		//random gore
+		int goreIndex = (rand() % 5 );
+
+
+
 		//dead
 		m_Alive = false;
-		m_Sprite.setTexture(TextureHolder::GetTexture("graphics/blood.png"));
+		m_Sprite.setTexture(TextureHolder::GetTexture(gore[goreIndex]));
 
 		return true;
 	}

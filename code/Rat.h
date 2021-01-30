@@ -8,14 +8,14 @@ class Rat
 {
 private:
 	//how fast is each rat type?
-	const float BLOATER_SPEED = 40;
-	const float CHASER_SPEED = 80;
-	const float CRAWLER_SPEED = 20;
+	const float ABOMINATION_SPEED = 40;
+	const float SQUEELER_SPEED = 80;
+	const float RUNT_SPEED = 50;
 
 	//how tough is each rat type
-	const float BLOATER_HEALTH = 5;
-	const float CHASER_HEALTH = 1;
-	const float CRAWLER_HEALTH = 3;
+	const float ABOMINATION_HEALTH = 5;
+	const float SQUEELER_HEALTH = 2;
+	const float RUNT_HEALTH = 1;
 
 	//make each rat vary its speed slightly
 	const int MAX_VARIANCE = 30;
@@ -35,6 +35,10 @@ private:
 
 	//is it still alive?
 	bool m_Alive;
+
+	//blood for the dead rat
+	String gore[5] = {"graphics/gore1.png", "graphics/gore2.png", "graphics/gore3.png", "graphics/gore4.png", "graphics/gore5.png"};
+
 
 	//Public prototypes go here
 public:
