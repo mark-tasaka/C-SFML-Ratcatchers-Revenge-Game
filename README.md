@@ -23,6 +23,10 @@ http://gamecodeschool.com/books/beginning-c-plus-plus-game-programming-2nd-editi
 ------------------
 Update Log:
 
+Update 1.02: 2021-01-30
+
+Updated the code to utilize the new graphics (update 1.01) added to the project.  Updated files Rat.h, Rat.cpp and RatLair.cpp.
+
 Update 1.01: 2021-01-26
 
 A new folder (graphics) has been added.  The folder continue png graphics I built in Photoshop to represent the player, icons and monsters for this game.
