@@ -12,6 +12,20 @@ Welcome to the ‘Ratcatcher’s Revenge’.  YOU are from a noble order of Ratc
 
 
 -----------------
+
+How to Play:
+
+Movement:
+Move up: 'W' or Up Arrow
+Move Left: 'A' or Left Arrow
+Move Right: 'D' or Right Arrow
+Move Down: 'S' or Down Arrow
+
+Shoot: Left Mouse Button
+Reload: 'R' or Spacebar
+
+-----------------
+
 Reference:
 
 John Horton's (Packt) Beginning C++ Game Programing (Second Edition): 
@@ -22,6 +36,11 @@ http://gamecodeschool.com/books/beginning-c-plus-plus-game-programming-2nd-editi
 
 ------------------
 Update Log:
+
+
+Update 1.03: 2021-02-02
+
+More custom graphics added.
 
 Update 1.02: 2021-01-30
 
