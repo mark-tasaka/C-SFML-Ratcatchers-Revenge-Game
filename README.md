@@ -42,6 +42,11 @@ http://gamecodeschool.com/books/beginning-c-plus-plus-game-programming-2nd-editi
 Update Log:
 
 
+Update 1.04: 2021-02-03
+
+Updated files CreatBackground.cpp, Rat.h adn RatLair.cpp.
+
+
 Update 1.03: 2021-02-02
 
 More custom graphics added.
