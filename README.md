@@ -15,7 +15,6 @@ Welcome to the ‘Ratcatcher’s Revenge’.  YOU are from a noble order of Ratc
 
 How to Play:
 
-Movement:
 
 Move up: 'W' or Up Arrow
 
@@ -26,6 +25,7 @@ Move Right: 'D' or Right Arrow
 Move Down: 'S' or Down Arrow
 
 Shoot: Left Mouse Button
+
 Reload: 'R' or Spacebar
 
 -----------------
