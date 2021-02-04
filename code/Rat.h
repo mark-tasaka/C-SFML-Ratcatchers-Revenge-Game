@@ -13,7 +13,7 @@ private:
 	const float RUNT_SPEED = 50;
 
 	//how tough is each rat type
-	const float ABOMINATION_HEALTH = 5;
+	const float ABOMINATION_HEALTH = 3;
 	const float SQUEELER_HEALTH = 2;
 	const float RUNT_HEALTH = 1;
 

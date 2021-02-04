@@ -1,5 +1,8 @@
 #include "stdafx.h"
+#include <sstream>
+#include <fstream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "RatLair.h"
 #include "Player.h"
 #include "TextureHolder.h"
@@ -65,7 +68,7 @@ int main()
 	// 100 bullets should do
 	Bullet bullets[100];
 	int currentBullet = 0;
-	int bulletsSpare = 24;
+	int bulletsSpare = 48;
 	int bulletsInClip = 6;
 	int clipSize = 6;
 	float fireRate = 1;
@@ -86,6 +89,70 @@ int main()
 	// About the game
 	int score = 0;
 	int hiScore = 0;
+
+	// For the home/game over screen
+	Sprite spriteGameOver;
+	Texture textureGameOver = TextureHolder::GetTexture("graphics/background.png");
+	spriteGameOver.setTexture(textureGameOver);
+	spriteGameOver.setPosition(0, 0);
+
+
+	// Create a view for the HUD
+	View hudView(sf::FloatRect(0, 0, resolution.x, resolution.y));
+
+	// Create a sprite for the ammo icon
+
+	Sprite spriteAmmoIcon6;
+	Texture textureAmmoIcon6 = TextureHolder::GetTexture("graphics/ammo_icon6.png");
+	spriteAmmoIcon6.setTexture(textureAmmoIcon6);
+	spriteAmmoIcon6.setPosition(20, 980);
+
+	Sprite spriteAmmoIcon5;
+	Texture textureAmmoIcon5 = TextureHolder::GetTexture("graphics/ammo_icon5.png");
+	spriteAmmoIcon5.setTexture(textureAmmoIcon5);
+	spriteAmmoIcon5.setPosition(20, 980);
+
+	Sprite spriteAmmoIcon4;
+	Texture textureAmmoIcon4 = TextureHolder::GetTexture("graphics/ammo_icon4.png");
+	spriteAmmoIcon4.setTexture(textureAmmoIcon4);
+	spriteAmmoIcon4.setPosition(20, 980);
+
+	Sprite spriteAmmoIcon3;
+	Texture textureAmmoIcon3 = TextureHolder::GetTexture("graphics/ammo_icon3.png");
+	spriteAmmoIcon3.setTexture(textureAmmoIcon3);
+	spriteAmmoIcon3.setPosition(20, 980);
+
+	Sprite spriteAmmoIcon2;
+	Texture textureAmmoIcon2 = TextureHolder::GetTexture("graphics/ammo_icon2.png");
+	spriteAmmoIcon2.setTexture(textureAmmoIcon2);
+	spriteAmmoIcon2.setPosition(20, 980);
+
+	Sprite spriteAmmoIcon1;
+	Texture textureAmmoIcon1 = TextureHolder::GetTexture("graphics/ammo_icon1.png");
+	spriteAmmoIcon1.setTexture(textureAmmoIcon1);
+	spriteAmmoIcon1.setPosition(20, 980);
+
+	// Load the font
+	Font font;
+	font.loadFromFile("fonts/Roboto-Light.ttf");
+
+
+	// Ammo
+	Text ammoText;
+	ammoText.setFont(font);
+	ammoText.setCharacterSize(55);
+	//ammoText.setFillColor(sf::Color(100, 250, 50));
+	ammoText.setPosition(200, 980);
+
+
+
+	// When did we last update the HUD?
+	int framesSinceLastHUDUpdate = 0;
+	// What time was the last update
+	Time timeSinceLastUpdate;
+	// How often (in frames) should we update the HUD
+	int fpsMeasurementFrameInterval = 1000;
+
 
 	// The main game loop
 	while (window.isOpen())
@@ -182,7 +249,7 @@ int main()
 				player.stopDown();
 			}
 
-			if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left) )
+			if (Keyboard::isKeyPressed(Keyboard::A) || Keyboard::isKeyPressed(Keyboard::Left))
 			{
 				player.moveLeft();
 			}
@@ -426,75 +493,154 @@ int main()
 
 			}
 
+			// size up the health bar
+		//	healthBar.setSize(Vector2f(player.getHealth() * 3, 70));
 
-		}// End updating the scene
+			// Increment the amount of time since the last HUD update
+		//	timeSinceLastUpdate += dt;
+			// Increment the number of frames since the last HUD calculation
+		//	framesSinceLastHUDUpdate++;
+		//	// Calculate FPS every fpsMeasurementFrameInterval frames
+		//	if (framesSinceLastHUDUpdate > fpsMeasurementFrameInterval)
+		//	{
 
-		 /*
-		 **************
-		 Draw the scene
-		 **************
-		 */
+				// Update game HUD text
+			//	std::stringstream ssAmmo;
+				//std::stringstream ssScore;
+				//std::stringstream ssHiScore;
+				//std::stringstream ssWave;
+				//std::stringstream ssZombiesAlive;
 
-		if (state == State::PLAYING)
-		{
-			window.clear();
+				// Update the ammo text
+			//	ssAmmo << bulletsInClip << "/" << bulletsSpare;
+			//	ammoText.setString(ssAmmo.str());
 
-			// set the mainView to be displayed in the window
-			// And draw everything related to it
-			window.setView(mainView);
+				// Update the score text
+			//	ssScore << "Score:" << score;
+				//	scoreText.setString(ssScore.str());
 
-			// Draw the background
-			window.draw(background, &textureBackground);
+					// Update the high score text
+				//ssHiScore << "Hi Score:" << hiScore;
+				//	hiScoreText.setString(ssHiScore.str());
 
-			// Draw the rats
-			for (int i = 0; i < numRats; i++)
+					// Update the wave
+				//	ssWave << "Wave:" << wave;
+				//	waveNumberText.setString(ssWave.str());
+
+					// Update the high score text
+				//	ssZombiesAlive << "Zombies:" << numZombiesAlive;
+					//zombiesRemainingText.setString(ssZombiesAlive.str());
+
+		//		framesSinceLastHUDUpdate = 0;
+				//timeSinceLastUpdate = Time
+
+
+			}// End updating the scene
+
+			 /*
+			 **************
+			 Draw the scene
+			 **************
+			 */
+
+			if (state == State::PLAYING)
 			{
-				window.draw(rats[i].getSprite());
-			}
+				window.clear();
 
-			for (int i = 0; i < 100; i++)
-			{
-				if (bullets[i].isInFlight())
+				// set the mainView to be displayed in the window
+				// And draw everything related to it
+				window.setView(mainView);
+
+				// Draw the background
+				window.draw(background, &textureBackground);
+
+				// Draw the rats
+				for (int i = 0; i < numRats; i++)
 				{
-					window.draw(bullets[i].getShape());
+					window.draw(rats[i].getSprite());
 				}
+
+				for (int i = 0; i < 100; i++)
+				{
+					if (bullets[i].isInFlight())
+					{
+						window.draw(bullets[i].getShape());
+					}
+				}
+
+
+				// Draw the player
+				window.draw(player.getSprite());
+
+				// Draw the pick-ups, if currently spawned
+				if (ammoPickup.isSpawned())
+				{
+					window.draw(ammoPickup.getSprite());
+				}
+				if (healthPickup.isSpawned())
+				{
+					window.draw(healthPickup.getSprite());
+				}
+
+
+				//Draw the crosshair
+				window.draw(spriteCrosshair);
+
+
+				window.setView(hudView);
+
+				// Draw all the HUD elements
+
+				if (bulletsInClip == 6)
+				{
+					window.draw(spriteAmmoIcon6);
+				}
+				else if (bulletsInClip == 5)
+				{
+					window.draw(spriteAmmoIcon5);
+				}
+				else if (bulletsInClip == 4)
+				{
+					window.draw(spriteAmmoIcon4);
+				}
+				else if (bulletsInClip == 3)
+				{
+					window.draw(spriteAmmoIcon3);
+				}
+				else if (bulletsInClip == 2)
+				{
+					window.draw(spriteAmmoIcon2);
+				}
+				else
+				{
+					window.draw(spriteAmmoIcon1);
+				}
+
+
+				window.draw(ammoText);
+
 			}
 
-
-			// Draw the player
-			window.draw(player.getSprite());
-
-			// Draw the pick-ups, if currently spawned
-			if (ammoPickup.isSpawned())
+			if (state == State::LEVELING_UP)
 			{
-				window.draw(ammoPickup.getSprite());
+				window.draw(spriteGameOver);
 			}
-			if (healthPickup.isSpawned())
+
+			if (state == State::PAUSED)
 			{
-				window.draw(healthPickup.getSprite());
 			}
 
+			if (state == State::GAME_OVER)
+			{
+			}
 
-			//Draw the crosshair
-			window.draw(spriteCrosshair);
+			window.display();
 
-		}
-
-		if (state == State::LEVELING_UP)
-		{
-		}
-
-		if (state == State::PAUSED)
-		{
-		}
-
-		if (state == State::GAME_OVER)
-		{
-		}
-
-		window.display();
+		//end if loop
 
 	}// End game loop
 
 	return 0;
+
 }
+

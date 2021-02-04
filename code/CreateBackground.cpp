@@ -8,7 +8,7 @@ int createBackground(VertexArray& rVA, IntRect arena)
 
 	//How big is the tile/texture
 	const int TILE_SIZE = 50;
-	const int TILE_TYPES = 3;
+	const int TILE_TYPES = 4;
 	const int VERTS_IN_QUAD = 4;
 
 	int worldWidth = arena.width / TILE_SIZE;
