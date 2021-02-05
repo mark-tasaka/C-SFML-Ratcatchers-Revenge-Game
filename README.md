@@ -42,6 +42,13 @@ http://gamecodeschool.com/books/beginning-c-plus-plus-game-programming-2nd-editi
 Update Log:
 
 
+
+Update 1.05: 2021-02-04
+
+Updated RatLair.cpp.  Added graphics: ammoCountBackground.png and ammo_icon0.png.
+
+
+
 Update 1.04: 2021-02-03
 
 Updated files CreatBackground.cpp, Rat.h adn RatLair.cpp.
