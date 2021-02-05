@@ -102,6 +102,12 @@ int main()
 
 	// Create a sprite for the ammo icon
 
+
+	Sprite ammoBackground;
+	Texture textureAmmoBackground = TextureHolder::GetTexture("graphics/ammoCountBackground.png");
+	ammoBackground.setTexture(textureAmmoBackground);
+	ammoBackground.setPosition(10, 980);
+
 	Sprite spriteAmmoIcon6;
 	Texture textureAmmoIcon6 = TextureHolder::GetTexture("graphics/ammo_icon6.png");
 	spriteAmmoIcon6.setTexture(textureAmmoIcon6);
@@ -132,6 +138,11 @@ int main()
 	spriteAmmoIcon1.setTexture(textureAmmoIcon1);
 	spriteAmmoIcon1.setPosition(20, 980);
 
+	Sprite spriteAmmoIcon0;
+	Texture textureAmmoIcon0 = TextureHolder::GetTexture("graphics/ammo_icon0.png");
+	spriteAmmoIcon0.setTexture(textureAmmoIcon0);
+	spriteAmmoIcon0.setPosition(20, 980);
+
 	// Load the font
 	Font font;
 	font.loadFromFile("fonts/Roboto-Light.ttf");
@@ -142,7 +153,7 @@ int main()
 	ammoText.setFont(font);
 	ammoText.setCharacterSize(55);
 	//ammoText.setFillColor(sf::Color(100, 250, 50));
-	ammoText.setPosition(200, 980);
+	ammoText.setPosition(90, 980);
 
 
 
@@ -272,7 +283,7 @@ int main()
 
 				if (gameTimeTotal.asMilliseconds()
 					- lastPressed.asMilliseconds()
-					> 1000 / fireRate && bulletsInClip > 0)
+					> 500 / fireRate && bulletsInClip > 0)
 				{
 
 					// Pass the centre of the player 
@@ -391,6 +402,11 @@ int main()
 			// Update the player
 			player.update(dtAsSeconds, Mouse::getPosition());
 
+
+			//set the ammo player has
+			//string bulletSpare = to_string(bulletsSpare);
+			//ammoText.setString(bulletSpare);
+
 			// Make a note of the players new position
 			Vector2f playerPosition(player.getCenter());
 
@@ -505,15 +521,15 @@ int main()
 		//	{
 
 				// Update game HUD text
-			//	std::stringstream ssAmmo;
+				std::stringstream ssAmmo;
 				//std::stringstream ssScore;
 				//std::stringstream ssHiScore;
 				//std::stringstream ssWave;
 				//std::stringstream ssZombiesAlive;
 
 				// Update the ammo text
-			//	ssAmmo << bulletsInClip << "/" << bulletsSpare;
-			//	ammoText.setString(ssAmmo.str());
+				ssAmmo <<  "x" << bulletsSpare << " rounds";
+				ammoText.setString(ssAmmo.str());
 
 				// Update the score text
 			//	ssScore << "Score:" << score;
@@ -589,6 +605,11 @@ int main()
 
 				window.setView(hudView);
 
+				window.draw(ammoBackground);
+
+
+				window.draw(ammoText);
+
 				// Draw all the HUD elements
 
 				if (bulletsInClip == 6)
@@ -611,9 +632,13 @@ int main()
 				{
 					window.draw(spriteAmmoIcon2);
 				}
-				else
+				else if (bulletsInClip == 1)
 				{
 					window.draw(spriteAmmoIcon1);
+				}
+				else
+				{
+					window.draw(spriteAmmoIcon0);
 				}
 
 
