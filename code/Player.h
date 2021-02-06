@@ -9,7 +9,7 @@ class Player
 {
 private:
 	const float START_SPEED = 200;
-	const float START_HEALTH = 800;
+	const float START_HEALTH = 200;
 
 	//where is the player
 	Vector2f m_Position;

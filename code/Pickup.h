@@ -35,7 +35,7 @@ private:
 	//pulic prototype
 public:
 	//C'tor
-	Pickup::Pickup(int type);
+	Pickup(int type);
 
 	//prepare a new pickup
 	void setArena(IntRect arena);

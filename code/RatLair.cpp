@@ -101,13 +101,6 @@ int main()
 	View hudView(sf::FloatRect(0, 0, resolution.x, resolution.y));
 
 	// Create a sprite for the ammo icon
-
-
-	Sprite ammoBackground;
-	Texture textureAmmoBackground = TextureHolder::GetTexture("graphics/ammoCountBackground.png");
-	ammoBackground.setTexture(textureAmmoBackground);
-	ammoBackground.setPosition(10, 980);
-
 	Sprite spriteAmmoIcon6;
 	Texture textureAmmoIcon6 = TextureHolder::GetTexture("graphics/ammo_icon6.png");
 	spriteAmmoIcon6.setTexture(textureAmmoIcon6);
@@ -148,13 +141,91 @@ int main()
 	font.loadFromFile("fonts/Roboto-Light.ttf");
 
 
+	// Paused
+	Text pausedText;
+	pausedText.setFont(font);
+	pausedText.setCharacterSize(155);
+	pausedText.setFillColor(Color::White);
+	pausedText.setPosition(400, 400);
+	pausedText.setString("Press Enter \nto continue");
+
+	// Game Over
+	Text gameOverText;
+	gameOverText.setFont(font);
+	gameOverText.setCharacterSize(125);
+	gameOverText.setFillColor(Color::White);
+	gameOverText.setPosition(250, 850);
+	gameOverText.setString("Press Enter to play");
+
+	// Levelling up
+	Text levelUpText;
+	levelUpText.setFont(font);
+	levelUpText.setCharacterSize(80);
+	levelUpText.setFillColor(Color::White);
+	levelUpText.setPosition(150, 250);
+	std::stringstream levelUpStream;
+	levelUpStream <<
+		"1- Increased rate of fire" <<
+		"\n2- Increased clip size(next reload)" <<
+		"\n3- Increased max health" <<
+		"\n4- Increased run speed" <<
+		"\n5- More and better health pickups" <<
+		"\n6- More and better ammo pickups";
+	levelUpText.setString(levelUpStream.str());
+
 	// Ammo
 	Text ammoText;
 	ammoText.setFont(font);
-	ammoText.setCharacterSize(55);
-	//ammoText.setFillColor(sf::Color(100, 250, 50));
-	ammoText.setPosition(90, 980);
+	ammoText.setCharacterSize(155);
+	ammoText.setFillColor(Color::White);
+	ammoText.setPosition(80, 900);
 
+	// Score
+	Text scoreText;
+	scoreText.setFont(font);
+	scoreText.setCharacterSize(55);
+	scoreText.setFillColor(Color::White);
+	scoreText.setPosition(20, 0);
+
+	// Load the high score from a text file/
+	std::ifstream inputFile("gamedata/scores.txt");
+	if (inputFile.is_open())
+	{
+		inputFile >> hiScore;
+		inputFile.close();
+	}
+
+	// Hi Score
+	Text hiScoreText;
+	hiScoreText.setFont(font);
+	hiScoreText.setCharacterSize(55);
+	hiScoreText.setFillColor(Color::White);
+	hiScoreText.setPosition(1400, 0);
+	std::stringstream s;
+	s << "Hi Score:" << hiScore;
+	hiScoreText.setString(s.str());
+
+	// Rats remaining
+	Text ratsRemainingText;
+	ratsRemainingText.setFont(font);
+	ratsRemainingText.setCharacterSize(55);
+	ratsRemainingText.setFillColor(Color::White);
+	ratsRemainingText.setPosition(1500, 980);
+	ratsRemainingText.setString("Zombies: 100");
+
+	// Wave number
+	int wave = 0;
+	Text waveNumberText;
+	waveNumberText.setFont(font);
+	waveNumberText.setCharacterSize(55);
+	waveNumberText.setFillColor(Color::White);
+	waveNumberText.setPosition(1250, 980);
+	waveNumberText.setString("Wave: 0");
+
+	// Health bar
+	RectangleShape healthBar;
+	healthBar.setFillColor(Color::Red);
+	healthBar.setPosition(450, 980);
 
 
 	// When did we last update the HUD?
@@ -164,6 +235,47 @@ int main()
 	// How often (in frames) should we update the HUD
 	int fpsMeasurementFrameInterval = 1000;
 
+	// Prepare the hit sound
+	SoundBuffer hitBuffer;
+	hitBuffer.loadFromFile("sound/hit.wav");
+	Sound hit;
+	hit.setBuffer(hitBuffer);
+
+	// Prepare the splat sound
+	SoundBuffer splatBuffer;
+	splatBuffer.loadFromFile("sound/splat.wav");
+	sf::Sound splat;
+	splat.setBuffer(splatBuffer);
+
+	// Prepare the shoot sound
+	SoundBuffer shootBuffer;
+	shootBuffer.loadFromFile("sound/shoot.wav");
+	Sound shoot;
+	shoot.setBuffer(shootBuffer);
+
+	// Prepare the reload sound
+	SoundBuffer reloadBuffer;
+	reloadBuffer.loadFromFile("sound/reload.wav");
+	Sound reload;
+	reload.setBuffer(reloadBuffer);
+
+	// Prepare the failed sound
+	SoundBuffer reloadFailedBuffer;
+	reloadFailedBuffer.loadFromFile("sound/reload_failed.wav");
+	Sound reloadFailed;
+	reloadFailed.setBuffer(reloadFailedBuffer);
+
+	// Prepare the powerup sound
+	SoundBuffer powerupBuffer;
+	powerupBuffer.loadFromFile("sound/powerup.wav");
+	Sound powerup;
+	powerup.setBuffer(powerupBuffer);
+
+	// Prepare the pickup sound
+	SoundBuffer pickupBuffer;
+	pickupBuffer.loadFromFile("sound/pickup.wav");
+	Sound pickup;
+	pickup.setBuffer(pickupBuffer);
 
 	// The main game loop
 	while (window.isOpen())
@@ -201,6 +313,18 @@ int main()
 					state == State::GAME_OVER)
 				{
 					state = State::LEVELING_UP;
+					wave = 0;
+					score = 0;
+
+					// Prepare the gun and ammo for next game
+					currentBullet = 0;
+					bulletsSpare = 48;
+					bulletsInClip = 6;
+					clipSize = 6;
+					fireRate = 1;
+
+					// Reset the player's stats
+					player.resetPlayerStats();
 				}
 
 				if (state == State::PLAYING)
@@ -213,16 +337,18 @@ int main()
 							// Plenty of bullets. Reload.
 							bulletsInClip = clipSize;
 							bulletsSpare -= clipSize;
+							reload.play();
 						}
 						else if (bulletsSpare > 0)
 						{
 							// Only few bullets left
 							bulletsInClip = bulletsSpare;
 							bulletsSpare = 0;
+							reload.play();
 						}
 						else
 						{
-							// More here soon?!
+							reloadFailed.play();
 						}
 					}
 
@@ -466,6 +592,8 @@ int main()
 									state = State::LEVELING_UP;
 								}
 							}
+							// Make a splat sound
+							splat.play();
 
 						}
 					}
@@ -482,12 +610,15 @@ int main()
 
 					if (player.hit(gameTimeTotal))
 					{
-						// More here later
+						hit.play();
 					}
 
 					if (player.getHealth() <= 0)
 					{
 						state = State::GAME_OVER;
+						std::ofstream outputFile("gamedata/scores.txt");
+						outputFile << hiScore;
+						outputFile.close();
 
 					}
 				}
@@ -498,6 +629,8 @@ int main()
 			(healthPickup.getPosition()) && healthPickup.isSpawned())
 			{
 				player.increaseHealthLevel(healthPickup.gotIt());
+				// Play a sound
+				pickup.play();
 
 			}
 
@@ -506,49 +639,53 @@ int main()
 			(ammoPickup.getPosition()) && ammoPickup.isSpawned())
 			{
 				bulletsSpare += ammoPickup.gotIt();
+				// Play a sound
+				reload.play();
 
 			}
 
 			// size up the health bar
-		//	healthBar.setSize(Vector2f(player.getHealth() * 3, 70));
+			healthBar.setSize(Vector2f(player.getHealth() * 3, 70));
 
 			// Increment the amount of time since the last HUD update
-		//	timeSinceLastUpdate += dt;
+			timeSinceLastUpdate += dt;
 			// Increment the number of frames since the last HUD calculation
-		//	framesSinceLastHUDUpdate++;
-		//	// Calculate FPS every fpsMeasurementFrameInterval frames
-		//	if (framesSinceLastHUDUpdate > fpsMeasurementFrameInterval)
-		//	{
+			framesSinceLastHUDUpdate++;
+			// Calculate FPS every fpsMeasurementFrameInterval frames
+			if (framesSinceLastHUDUpdate > fpsMeasurementFrameInterval)
+			{
 
 				// Update game HUD text
 				std::stringstream ssAmmo;
-				//std::stringstream ssScore;
-				//std::stringstream ssHiScore;
-				//std::stringstream ssWave;
-				//std::stringstream ssZombiesAlive;
+				std::stringstream ssScore;
+				std::stringstream ssHiScore;
+				std::stringstream ssWave;
+				std::stringstream ssRatsAlive;
 
 				// Update the ammo text
-				ssAmmo <<  "x" << bulletsSpare << " rounds";
+				//ssAmmo << bulletsInClip << "/" << bulletsSpare;
+				ssAmmo << bulletsSpare;
 				ammoText.setString(ssAmmo.str());
 
 				// Update the score text
-			//	ssScore << "Score:" << score;
-				//	scoreText.setString(ssScore.str());
+				ssScore << "Score:" << score;
+				scoreText.setString(ssScore.str());
 
-					// Update the high score text
-				//ssHiScore << "Hi Score:" << hiScore;
-				//	hiScoreText.setString(ssHiScore.str());
+				// Update the high score text
+				ssHiScore << "Hi Score:" << hiScore;
+				hiScoreText.setString(ssHiScore.str());
 
-					// Update the wave
-				//	ssWave << "Wave:" << wave;
-				//	waveNumberText.setString(ssWave.str());
+				// Update the wave
+				ssWave << "Wave:" << wave;
+				waveNumberText.setString(ssWave.str());
 
-					// Update the high score text
-				//	ssZombiesAlive << "Zombies:" << numZombiesAlive;
-					//zombiesRemainingText.setString(ssZombiesAlive.str());
+				// Update the high score text
+				ssRatsAlive << "Rats:" << numRatsAlive;
+				ratsRemainingText.setString(ssRatsAlive.str());
 
-		//		framesSinceLastHUDUpdate = 0;
-				//timeSinceLastUpdate = Time
+				framesSinceLastHUDUpdate = 0;
+				timeSinceLastUpdate = Time::Zero;
+			}// End HUD update
 
 
 			}// End updating the scene
@@ -605,12 +742,13 @@ int main()
 
 				window.setView(hudView);
 
-				window.draw(ammoBackground);
-
-
-				window.draw(ammoText);
-
 				// Draw all the HUD elements
+				window.draw(ammoText);
+				window.draw(scoreText);
+				window.draw(hiScoreText);
+				window.draw(healthBar);
+				window.draw(waveNumberText);
+				window.draw(ratsRemainingText);
 
 				if (bulletsInClip == 6)
 				{
@@ -642,21 +780,27 @@ int main()
 				}
 
 
-				window.draw(ammoText);
+				//window.draw(ammoText);
 
 			}
 
 			if (state == State::LEVELING_UP)
 			{
 				window.draw(spriteGameOver);
+				window.draw(levelUpText);
 			}
 
 			if (state == State::PAUSED)
 			{
+				window.draw(pausedText);
 			}
 
 			if (state == State::GAME_OVER)
 			{
+				window.draw(spriteGameOver);
+				window.draw(gameOverText);
+				window.draw(scoreText);
+				window.draw(hiScoreText);
 			}
 
 			window.display();
