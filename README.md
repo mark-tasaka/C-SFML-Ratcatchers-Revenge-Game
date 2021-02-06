@@ -44,6 +44,11 @@ Update Log:
 
 
 
+Update 1.07: 2021-02-06
+
+I have added to new folders: sound and font.  The sound folder contains custom sounds created through Bfxr Standalone V1.5.1; a free sound tool available at https://www.bfxr.net/.  The font folder contains the tff file for VRC OSD Mono; a font created by Riciery Leal and available at https://www.dafont.com/vcr-osd-mono.font.
+
+
 Update 1.06: 2021-02-05
 
 Updated RatLair.cpp, PickUp.h and Player.h files.
