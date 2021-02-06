@@ -43,6 +43,12 @@ Update Log:
 
 
 
+
+Update 1.06: 2021-02-05
+
+Updated RatLair.cpp, PickUp.h and Player.h files.
+
+
 Update 1.05: 2021-02-04
 
 Updated RatLair.cpp.  Added graphics: ammoCountBackground.png and ammo_icon0.png.
