@@ -75,3 +75,6 @@ int createBackground(VertexArray& rVA, IntRect arena)
 	return TILE_SIZE;
 
 }
+
+
+

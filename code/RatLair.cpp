@@ -8,12 +8,30 @@
 #include "TextureHolder.h"
 #include "Bullet.h"
 #include "Pickup.h"
+#include <random>
+#include <time.h>
 
 /*The Rat Catchers Revenge
 Student project created by Mark Tasaka base on John Horton’s 'Zombie Arena',
 from */
 
 using namespace sf;
+
+
+int getLairDimensions(int baseSize)
+{
+	//srand(time(0));
+	default_random_engine generator;
+	uniform_int_distribution<int> distribution(5, 12);
+
+	int number = distribution(generator);
+
+	int dimenionSize = number * baseSize;
+
+	return dimenionSize;
+
+}
+
 
 //Main: program entry
 int main()
@@ -100,6 +118,7 @@ int main()
 	// Create a view for the HUD
 	View hudView(sf::FloatRect(0, 0, resolution.x, resolution.y));
 
+
 	// Create a sprite for the ammo icon
 	Sprite spriteAmmoIcon6;
 	Texture textureAmmoIcon6 = TextureHolder::GetTexture("graphics/ammo_icon6.png");
@@ -138,7 +157,7 @@ int main()
 
 	// Load the font
 	Font font;
-	font.loadFromFile("fonts/Roboto-Light.ttf");
+	font.loadFromFile("fonts/vcrOsdMono.ttf");
 
 
 	// Paused
@@ -176,7 +195,7 @@ int main()
 	// Ammo
 	Text ammoText;
 	ammoText.setFont(font);
-	ammoText.setCharacterSize(155);
+	ammoText.setCharacterSize(55);
 	ammoText.setFillColor(Color::White);
 	ammoText.setPosition(80, 900);
 
@@ -211,7 +230,7 @@ int main()
 	ratsRemainingText.setCharacterSize(55);
 	ratsRemainingText.setFillColor(Color::White);
 	ratsRemainingText.setPosition(1500, 980);
-	ratsRemainingText.setString("Zombies: 100");
+	ratsRemainingText.setString("Rats: 100");
 
 	// Wave number
 	int wave = 0;
@@ -472,8 +491,10 @@ int main()
 			{
 				// Prepare thelevel
 				// We will modify the next two lines later
-				arena.width = 1000;
-				arena.height = 1000;
+				//arena.width = 1000;
+				
+				arena.width = getLairDimensions(LAIR_BASE_SIZE);
+				arena.height = getLairDimensions(LAIR_BASE_SIZE);
 				arena.left = 0;
 				arena.top = 0;
 
@@ -663,8 +684,8 @@ int main()
 				std::stringstream ssRatsAlive;
 
 				// Update the ammo text
-				//ssAmmo << bulletsInClip << "/" << bulletsSpare;
-				ssAmmo << bulletsSpare;
+				ssAmmo << "Shotgun Shells:" << bulletsSpare;
+				//ssAmmo << bulletsSpare;
 				ammoText.setString(ssAmmo.str());
 
 				// Update the score text
@@ -812,4 +833,7 @@ int main()
 	return 0;
 
 }
+
+
+
 
