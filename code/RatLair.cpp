@@ -195,9 +195,9 @@ int main()
 	// Ammo
 	Text ammoText;
 	ammoText.setFont(font);
-	ammoText.setCharacterSize(55);
+	ammoText.setCharacterSize(35);
 	ammoText.setFillColor(Color::White);
-	ammoText.setPosition(80, 900);
+	ammoText.setPosition(155, 990);
 
 	// Score
 	Text scoreText;
@@ -684,7 +684,7 @@ int main()
 				std::stringstream ssRatsAlive;
 
 				// Update the ammo text
-				ssAmmo << "Shotgun Shells:" << bulletsSpare;
+				ssAmmo << bulletsSpare;
 				//ssAmmo << bulletsSpare;
 				ammoText.setString(ssAmmo.str());
 
@@ -764,7 +764,6 @@ int main()
 				window.setView(hudView);
 
 				// Draw all the HUD elements
-				window.draw(ammoText);
 				window.draw(scoreText);
 				window.draw(hiScoreText);
 				window.draw(healthBar);
@@ -801,7 +800,7 @@ int main()
 				}
 
 
-				//window.draw(ammoText);
+				window.draw(ammoText);
 
 			}
 
