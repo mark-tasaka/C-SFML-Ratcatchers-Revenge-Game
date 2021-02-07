@@ -43,6 +43,9 @@ Update Log:
 
 
 
+Update 1.09: 2021-02-07
+
+Updated some of the existing graphics.  Made changes to RatLair.cpp.
 
 Update 1.08: 2021-02-06
 
